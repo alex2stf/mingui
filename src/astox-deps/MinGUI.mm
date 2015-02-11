@@ -1,4 +1,5 @@
 #include <Foundation/Foundation.h>
+#include <CoreFoundation/CoreFoundation.h>
 #include <objc/runtime.h>
 #include "MinGUI.h"
 
@@ -43,7 +44,7 @@ BOOL keepRunning = YES;
 
 @end
 
-void Notification(const char * title, const char * subtitle, const char * footer, int lifetime){
+void MINGUI_Notification(const char * title, const char * subtitle, const char * footer, int lifetime){
     if (installNSBundleHook()) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
@@ -76,4 +77,98 @@ void Notification(const char * title, const char * subtitle, const char * footer
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
         }
     }
+}
+
+
+
+int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid), int flags, int pid){
+    SInt32 nRes = 0;
+    CFStringRef header_ref = CFStringCreateWithCString(NULL, title, strlen(title));
+    CFStringRef message_ref = CFStringCreateWithCString(NULL, message, strlen(message));
+//    printf("%s & %s flags: %i\n", title, message, flags);
+//    CFUserNotificationRef pDlg = NULL;
+//    const void* keys[] = { kCFUserNotificationAlertHeaderKey,  kCFUserNotificationAlertMessageKey };
+//    const void* vals[] = { header_ref,  message_ref };
+//    
+//    CFDictionaryRef dict = CFDictionaryCreate(0, keys, vals,
+//                                              sizeof(keys)/sizeof(*keys),
+//                                              &kCFTypeDictionaryKeyCallBacks,
+//                                              &kCFTypeDictionaryValueCallBacks);
+//    
+//    
+//    
+//    pDlg = CFUserNotificationCreate(kCFAllocatorDefault, 0, kCFUserNotificationPlainAlertLevel, &nRes, dict);
+
+    CFOptionFlags result;
+//    kCFUserNotificationAlertHeaderKey
+    //kCFUserNotificationPlainAlertLevel
+    
+    switch (flags) {
+        case DG_DEFAULT:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationPlainAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, NULL, NULL, &result );
+            break;
+        case DG_OK_WARNING:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationCautionAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, NULL, NULL, &result );
+            break;
+        case DG_OK_ERROR:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationStopAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, NULL, NULL, &result );
+            break;
+        case DG_OK_INFO:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationNoteAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, NULL, NULL, &result );
+            break;
+            
+        case DG_OKCANCEL:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationPlainAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, CFSTR("Cancel"), NULL, &result );
+            break; 
+        case DG_OKCANCEL_WARNING:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationCautionAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, CFSTR("Cancel"), NULL, &result );
+            break;
+        case DG_OKCANCEL_ERROR:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationStopAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, CFSTR("Cancel"), NULL, &result );
+            break;
+        case DG_OKCANCEL_INFO:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationNoteAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, NULL, CFSTR("Cancel"), NULL, &result );
+            break;
+            
+        case DG_YESNO:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationPlainAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, CFSTR("Yes"), CFSTR("No"), NULL, &result );
+            break;
+        case DG_YESNO_WARNING:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationCautionAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, CFSTR("Yes"), CFSTR("No"), NULL, &result );
+            break;
+        case DG_YESNO_ERROR:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationStopAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, CFSTR("Yes"), CFSTR("No"), NULL, &result );
+            break;
+        case DG_YESNO_INFO:
+            CFUserNotificationDisplayAlert( 0,  kCFUserNotificationNoteAlertLevel, NULL,   NULL,   NULL, header_ref, message_ref, CFSTR("Yes"), CFSTR("No"), NULL, &result );
+            break;
+            
+        default:
+            CFUserNotificationDisplayAlert(
+                                           0, // no timeout
+                                           kCFUserNotificationPlainAlertLevel, //change it depending message_type flags ( MB_ICONASTERISK.... etc.)
+                                           NULL, //icon url, use default, you can change it depending message_type flags
+                                           NULL, //not used
+                                           NULL, //localization of strings
+                                           header_ref, //header text
+                                           message_ref, //message text
+                                           NULL, //default "ok" text in button
+                                           NULL, //CFSTR("Cancel"), //alternate button title
+                                           NULL, //other button title, null--> no other button
+                                           &result //response flags
+                                           );
+            break;
+    }
+    
+    
+    if(callback!=NULL){
+//        printf("         dialog clicked result: %i    \n", result);
+        callback(result, pid);
+    }
+    return result;
+    
+    
+//    CFRelease( header_ref );
+//    CFRelease( message_ref );
+    
 }
