@@ -1,0 +1,1 @@
+cmd_Release/mingui.node := ./gyp-mac-tool flock ./Release/linker.lock c++ -shared -Wl,-search_paths_first -mmacosx-version-min=10.5 -arch x86_64 -L./Release -install_name @rpath/mingui.node  -o Release/mingui.node Release/obj.target/mingui/src/mingui.o Release/obj.target/mingui/src/astox-deps/StringAlg.o Release/obj.target/mingui/src/astox-deps/MinGUI.o -undefined dynamic_lookup
