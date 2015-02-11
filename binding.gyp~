@@ -26,6 +26,8 @@
           	}],
 		['OS=="linux"', {
 			"sources": [
+				"src/mingui.cc",
+				"src/astox-deps/StringAlg.cpp",
 				"src/astox-deps/MinGUI.cpp"
 			],
 			"defines": [ "ASTOX_ENABLE_GTK" ],

@@ -184,7 +184,7 @@ void init(Handle<Object> exports) {
 	char xx2[] = "2";
 	char* argv[] = {xx1, xx2};
 	char** argvp = argv;
-	gtk_init (&argc, &argvp);
+	gtk_init (&argc, &argp);
 #endif
 
   exports->Set(String::NewSymbol("notification"), FunctionTemplate::New(notification)->GetFunction());

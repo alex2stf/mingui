@@ -137,9 +137,9 @@
 #endif
 
 #ifdef ASTOX_ENABLE_GTK
-		//void MINGUI_init(int argc, char *argv[]){
-		//	 gtk_init (&argc, &argv);
-		//}
+		void MINGUI_init(int argc, char *argv[]){
+			 gtk_init (&argc, &argv);
+		}
 
 		int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid), int flags, int pid) {
 			  GtkWidget *dialog;
