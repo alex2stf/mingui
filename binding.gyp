@@ -22,7 +22,7 @@
 	  
 	  ,"conditions": [
 		['OS=="win"', {
-
+			"defines": [ "ASTOX_OS_WINDOWS" ]
           }],
           ['OS=="mac"', {
           	"defines": [ "__MACOSX_CORE__" ],

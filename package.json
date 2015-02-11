@@ -1,6 +1,6 @@
 {
   "name": "mingui",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "description": "minimal graphical user interface components",
   "main": "index.js",
   "directories": {

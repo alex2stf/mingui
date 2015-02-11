@@ -17,18 +17,11 @@
 #include <v8.h>
 
 
-#ifdef __MACOSX_CORE__
-	#include "astox-deps/MinGUI.h"
-#else
-int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid) = NULL, int flags = 0, int pid = 1) {
-	printf("method not supported, check for updates");
-	return 0;
-};
-void MINGUI_Notification(const char * title = "NotificationTitle", const char * subtitle = "notificationSubtitle", const char * footer = "notificationFooter", int lifetime = 5){
-	printf("method not supported, check for updates");
-};
 
-#endif
+#include "astox-deps/MinGUI.h"
+
+
+
 
 using namespace v8;
 using namespace astox::stringAlg;
@@ -53,7 +46,7 @@ Handle<Value> notification(const Arguments& args) {
 	  footer = v8Value2StdString(args[2]);
   }
 
-  MINGUI_Notification(title.c_str(), subtitle.c_str(), footer.c_str());
+  MINGUI_Notification(title.c_str(), subtitle.c_str(), footer.c_str(), 1);
 
   return scope.Close(Number::New(9));
 }
@@ -67,8 +60,6 @@ Handle<Value> getResponseTypes(const Arguments& args) {
   cobj->Set( String::New("DGANSW_YES"), Number::New(DGANSW_YES));
   cobj->Set( String::New("DGANSW_NO"), Number::New(DGANSW_NO));
   cobj->Set( String::New("DGANSW_CLOSED"), Number::New(DGANSW_CLOSED));
-
-
   return scope.Close(cobj);
 }
 
@@ -87,7 +78,6 @@ Handle<Value> getDialogTypes(const Arguments& args) {
   cobj->Set( String::New("DG_YESNO_WARNING"), Number::New(DG_YESNO_WARNING));
   cobj->Set( String::New("DG_YESNO_ERROR"), Number::New(DG_YESNO_ERROR));
   cobj->Set( String::New("DG_YESNO_INFO"), Number::New(DG_YESNO_INFO));
-
   return scope.Close(cobj);
 }
 
@@ -96,9 +86,7 @@ Handle<Value> typeToString(const Arguments& args) {
   const char * response;
 
 	int type = Handle<Number>::Cast(args[0])->Uint32Value();
-	switch(type) {
 
-	}
 
 
    return scope.Close(String::New(response));
