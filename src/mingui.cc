@@ -86,7 +86,48 @@ Handle<Value> typeToString(const Arguments& args) {
   const char * response;
 
 	int type = Handle<Number>::Cast(args[0])->Uint32Value();
+	switch(type) {
+	case DG_DEFAULT:
+		response = "DG_DEFAULT";
+		break;
+	case DG_OKCANCEL:
+		response = "DG_OKCANCEL";
+		break;
+	case DG_OKCANCEL_ERROR:
+		response = "DG_OKCANCEL_ERROR";
+		break;
+	case DG_OKCANCEL_INFO:
+		response = "DG_OKCANCEL_INFO";
+		break;
+	case DG_OKCANCEL_WARNING:
+		response = "DG_OKCANCEL_WARNING";
+		break;
+	case DG_OK_ERROR:
+		response = "DG_OK_ERROR";
+		break;
+	case DG_OK_INFO:
+		response = "DG_OK_INFO";
+		break;
+	case DG_OK_WARNING:
+		response = "DG_OK_WARNING";
+		break;
+	case DG_YESNO:
+		response = "DG_YESNO";
+		break;
+	case DG_YESNO_ERROR:
+		response = "DG_YESNO_ERROR";
+		break;
+	case DG_YESNO_INFO:
+		response = "DG_YESNO_INFO";
+		break;
+	case DG_YESNO_WARNING:
+		response = "DG_YESNO_WARNING";
+		break;
 
+	default:
+		response = "undefined";
+		break;
+	}
 
 
    return scope.Close(String::New(response));
@@ -142,6 +183,7 @@ void init(Handle<Object> exports) {
   exports->Set(String::NewSymbol("getDialogTypes"), FunctionTemplate::New(getDialogTypes)->GetFunction());
   exports->Set(String::NewSymbol("getResponseTypes"), FunctionTemplate::New(getResponseTypes)->GetFunction());
   exports->Set(String::NewSymbol("answerToString"), FunctionTemplate::New(answerToString)->GetFunction());
+  exports->Set(String::NewSymbol("typeToString"), FunctionTemplate::New(typeToString)->GetFunction());
 
 }
 

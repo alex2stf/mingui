@@ -5,8 +5,8 @@
  *      Author: alexandru
  */
 
-#ifndef MINGUI_H_
-#define MINGUI_H_
+#ifndef ASTX_MINGUI_H_
+#define ASTX_MINGUI_H_
 #include <stdlib.h>
 //#include "Macros.h"
 
