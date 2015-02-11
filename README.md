@@ -10,7 +10,7 @@ before installing on macosx, run ```sudo xcodebuild -license``` in terminal to a
 Sample:
 ----------
 ```javascript
-var obj = require('../index');
+var obj = require('mingui');
 
 obj.notification("Notification sample", "opened from", "NODEJS");
 obj.dialog();
