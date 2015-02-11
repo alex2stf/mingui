@@ -2,9 +2,10 @@ mingui
 =========
 ### MINimal Graphic User Interface tools
 
-MACOSX install:
+Requirements:
 ----------
-before installing on macosx, run sudo xcodebuild -license in terminal to agree xcode license
+### MacOSX
+before installing on macosx, run ```sudo xcodebuild -license``` in terminal to agree xcode license and agreement
 
 Sample:
 ----------
