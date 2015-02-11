@@ -82,7 +82,6 @@ void MINGUI_Notification(const char * title, const char * subtitle, const char *
 
 
 int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid), int flags, int pid){
-    SInt32 nRes = 0;
     CFStringRef header_ref = CFStringCreateWithCString(NULL, title, strlen(title));
     CFStringRef message_ref = CFStringCreateWithCString(NULL, message, strlen(message));
 //    printf("%s & %s flags: %i\n", title, message, flags);
