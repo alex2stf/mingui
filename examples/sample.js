@@ -8,6 +8,7 @@ var responses = obj.getResponseTypes();
 
 for(var i in types){
 	var result = obj.dialog("Title: ["+i+"]", "os value: "+types[i], types[i]);
+	console.log(obj.answerToString(result));
 		switch(result){
 		case DGANSW_OK:
 			console.log("dialog closed OK");

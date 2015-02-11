@@ -12,12 +12,17 @@ Sample:
 ```javascript
 var obj = require('mingui');
 
+//notification sample:
 obj.notification("Notification sample", "opened from", "NODEJS");
-obj.dialog();
+
+//dialog sample with no arguments
+obj.dialog(); 
 
 var types = obj.getDialogTypes();
 var responses = obj.getResponseTypes();
 
+
+//iterate all supported dialog types:
 for(var i in types){
 	var result = obj.dialog("Title: ["+i+"]", "os value: "+types[i], types[i]);
 		switch(result){

@@ -10,13 +10,26 @@
 
 
 #include <iostream>
-#ifdef __MACOSX_CORE__
-#include "astox-deps/MinGUI.h"
-#endif
+
 #include "StringAlg.h"
 #include "Macros.h"
 #include <node.h>
 #include <v8.h>
+
+
+#ifdef __MACOSX_CORE__
+	#include "astox-deps/MinGUI.h"
+#else
+int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid) = NULL, int flags = 0, int pid = 1) {
+	printf("method not supported, check for updates");
+	return 0;
+};
+void MINGUI_Notification(const char * title = "NotificationTitle", const char * subtitle = "notificationSubtitle", const char * footer = "notificationFooter", int lifetime = 5){
+	printf("method not supported, check for updates");
+};
+
+#endif
+
 using namespace v8;
 using namespace astox::stringAlg;
 
@@ -78,21 +91,51 @@ Handle<Value> getDialogTypes(const Arguments& args) {
   return scope.Close(cobj);
 }
 
+Handle<Value> typeToString(const Arguments& args) {
+  HandleScope scope;
+  const char * response;
 
-void c_dialogHandler(int stat, int pid) {
-	printf("         dialog clicked result: %i    \n", stat);
-	if(!dialogHandler->IsUndefined()) {
-		Handle<Value> filArgs[1];
-		Local<Object> filObj = Object::New();
-		filObj->Set( String::New("stat"), Number::New(stat));
-		filObj->Set( String::New("pid"), Number::New(pid));
-		dialogHandler->Call(Context::GetCurrent()->Global(), 1, filArgs);
+	int type = Handle<Number>::Cast(args[0])->Uint32Value();
+	switch(type) {
+
 	}
+
+
+   return scope.Close(String::New(response));
 }
+
+
+Handle<Value> answerToString(const Arguments& args) {
+  HandleScope scope;
+  const char * response;
+
+	int type = Handle<Number>::Cast(args[0])->Uint32Value();
+	switch(type) {
+	case DGANSW_OK:
+		response = "DGANSW_OK";
+		break;
+	case DGANSW_CANCEL:
+		response = "DGANSW_CANCEL";
+		break;
+#ifndef __MACOSX_CORE__
+	case DGANSW_YES:
+		response = "DGANSW_YES";
+		break;
+	case DGANSW_NO:
+		response = "DGANSW_NO";
+		break;
+#endif
+	case DGANSW_CLOSED:
+		response = "DGANSW_CLOSED";
+		break;
+	}
+
+   return scope.Close(String::New(response));
+}
+
 
 Handle<Value> dialog(const Arguments& args) {
   HandleScope scope;
-
 
 	v8::String::Utf8Value uftValue(args[0]->ToString());
 	v8::String::Utf8Value uftValue2(args[1]->ToString());
@@ -100,9 +143,6 @@ Handle<Value> dialog(const Arguments& args) {
 	char * _stlt = *uftValue2;
 	int type = Handle<Number>::Cast(args[2])->Uint32Value();
 	int result = MINGUI_Dialog(_tlt, _stlt, NULL, type, 0);
-
-
-
 
    return scope.Close(Number::New(result));
 }
@@ -113,6 +153,7 @@ void init(Handle<Object> exports) {
   exports->Set(String::NewSymbol("dialog"), FunctionTemplate::New(dialog)->GetFunction());
   exports->Set(String::NewSymbol("getDialogTypes"), FunctionTemplate::New(getDialogTypes)->GetFunction());
   exports->Set(String::NewSymbol("getResponseTypes"), FunctionTemplate::New(getResponseTypes)->GetFunction());
+  exports->Set(String::NewSymbol("answerToString"), FunctionTemplate::New(answerToString)->GetFunction());
 
 }
 
