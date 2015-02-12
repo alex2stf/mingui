@@ -161,9 +161,16 @@ int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int
     
     
     if(callback!=NULL){
-//        printf("         dialog clicked result: %i    \n", result);
         callback(result, pid);
     }
+    
+    if(flags == DG_YESNO || flags == DG_YESNO_ERROR || flags == DG_YESNO_INFO || flags == DG_YESNO_WARNING) {
+        if(result == 0) {
+            return DGANSW_YES;
+        }
+         return DGANSW_NO;
+    }
+    
     return result;
     
     

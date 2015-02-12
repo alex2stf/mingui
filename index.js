@@ -3,6 +3,14 @@ mingui = require("./build/Release/mingui");
 module.exports = mingui;
 
 var answtype = mingui.getResponseTypes();
+var dlgtypes = mingui.getDialogTypes();
 
-GLOBAL.DGANSW_OK = answtype.DGANSW_OK;
-GLOBAL.DGANSW_CANCEL = answtype.DGANSW_CANCEL;
+for(var i in answtype){
+	GLOBAL[i] = answtype[i];
+}
+
+for(var i in dlgtypes){
+	GLOBAL[i] = dlgtypes[i];
+}
+
+console.log(GLOBAL);

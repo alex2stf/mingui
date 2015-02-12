@@ -146,14 +146,12 @@ Handle<Value> answerToString(const Arguments& args) {
 	case DGANSW_CANCEL:
 		response = "DGANSW_CANCEL";
 		break;
-#ifndef __MACOSX_CORE__
 	case DGANSW_YES:
 		response = "DGANSW_YES";
 		break;
 	case DGANSW_NO:
 		response = "DGANSW_NO";
 		break;
-#endif
 	case DGANSW_CLOSED:
 		response = "DGANSW_CLOSED";
 		break;

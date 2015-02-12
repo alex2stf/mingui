@@ -162,6 +162,7 @@ enum DialogFlags {
 		DGANSW_NO = GTK_RESPONSE_NO,
 		DGANSW_CLOSED= GTK_RESPONSE_CLOSE
 	};
+	void MINGUI_init(int argc, char *argv[]);
 	int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid) = NULL, int flags = 0, int pid = 1);
 	void MINGUI_Notification(const char * title = "NotificationTitle", const char * subtitle = "notificationSubtitle", const char * footer = "notificationFooter", int lifetime = 5);
 #endif
@@ -171,9 +172,9 @@ enum DialogFlags {
 	enum DialogAnswers{
 		DGANSW_OK = 0,
 		DGANSW_CANCEL = 1,
-		DGANSW_YES = 0,
-		DGANSW_NO = 1,
-		DGANSW_CLOSED = -2
+		DGANSW_YES = 2,
+		DGANSW_NO = 3,
+		DGANSW_CLOSED = 4
 	};
 
 	int MINGUI_Dialog(const char * title, const char * message, void (*callback)(int stat, int pid) = NULL, int flags = 0, int pid = 1);
