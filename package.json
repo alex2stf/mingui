@@ -1,6 +1,6 @@
 {
   "name": "mingui",
-  "version": "0.0.10",
+  "version": "1.0.1",
   "description": "minimal graphical user interface components",
   "main": "index.js",
   "directories": {
@@ -12,13 +12,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alex2stf/mingui.git"
+    "url": "git+https://github.com/alex2stf/mingui.git"
   },
-  "author": "",
+  "author": "alex2stf",
   "license": "ISC",
   "gypfile": true,
   "bugs": {
     "url": "https://github.com/alex2stf/mingui/issues"
   },
-  "homepage": "https://github.com/alex2stf/mingui"
+  "homepage": "https://github.com/alex2stf/mingui",
+  "keywords": [
+    "graphic user interface",
+    "addon",
+    "c++",
+    "cross platform",
+    "macos graphics",
+    "unix",
+    "windows graphics",
+    "notification center"
+  ]
 }
