@@ -14,7 +14,7 @@
 #include "StringAlg.h"
 #include "Macros.h"
 #include <node.h>
-#include <v8.h>
+
 
 
 
@@ -26,12 +26,21 @@
 using namespace v8;
 using namespace astox::stringAlg;
 
+using v8::FunctionCallbackInfo;
+using v8::Isolate;
+using v8::Local;
+using v8::Object;
+using v8::String;
+using v8::Value;
+using v8::Number;
+
+
 
 Handle<Function> dialogHandler;
 
-Handle<Value> notification(const Arguments& args) {
-  HandleScope scope;
-
+void notification(const FunctionCallbackInfo<Value>& args) {
+  
+  Isolate* isolate = args.GetIsolate();
   std::string title;
   std::string subtitle;
   std::string footer;
@@ -48,41 +57,41 @@ Handle<Value> notification(const Arguments& args) {
 
   MINGUI_Notification(title.c_str(), subtitle.c_str(), footer.c_str(), 1);
 
-  return scope.Close(Number::New(9));
+  args.GetReturnValue().Set(Number::New(isolate, 9));
 }
 
 
-Handle<Value> getResponseTypes(const Arguments& args) {
-  HandleScope scope;
-  Local<Object> cobj = Object::New();
-  cobj->Set( String::New("DGANSW_OK"), Number::New(DGANSW_OK));
-  cobj->Set( String::New("DGANSW_CANCEL"), Number::New(DGANSW_CANCEL));
-  cobj->Set( String::New("DGANSW_YES"), Number::New(DGANSW_YES));
-  cobj->Set( String::New("DGANSW_NO"), Number::New(DGANSW_NO));
-  cobj->Set( String::New("DGANSW_CLOSED"), Number::New(DGANSW_CLOSED));
-  return scope.Close(cobj);
+void getResponseTypes(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+  Local<Object> cobj = Object::New(isolate);
+  cobj->Set( String::NewFromUtf8(isolate, "DGANSW_OK"), Number::New(isolate, DGANSW_OK));
+  cobj->Set( String::NewFromUtf8(isolate, "DGANSW_CANCEL"), Number::New(isolate, DGANSW_CANCEL));
+  cobj->Set( String::NewFromUtf8(isolate, "DGANSW_YES"), Number::New(isolate, DGANSW_YES));
+  cobj->Set( String::NewFromUtf8(isolate, "DGANSW_NO"), Number::New(isolate, DGANSW_NO));
+  cobj->Set( String::NewFromUtf8(isolate, "DGANSW_CLOSED"), Number::New(isolate, DGANSW_CLOSED));
+  args.GetReturnValue().Set(cobj);
 }
 
-Handle<Value> getDialogTypes(const Arguments& args) {
-  HandleScope scope;
-  Local<Object> cobj = Object::New();
-  cobj->Set( String::New("DG_DEFAULT"), Number::New(DG_DEFAULT));
-  cobj->Set( String::New("DG_OK_WARNING"), Number::New(DG_OK_WARNING));
-  cobj->Set( String::New("DG_OK_ERROR"), Number::New(DG_OK_ERROR));
-  cobj->Set( String::New("DG_OK_INFO"), Number::New(DG_OK_INFO));
-  cobj->Set( String::New("DG_OKCANCEL"), Number::New(DG_OKCANCEL));
-  cobj->Set( String::New("DG_OKCANCEL_WARNING"), Number::New(DG_OKCANCEL_WARNING));
-  cobj->Set( String::New("DG_OKCANCEL_ERROR"), Number::New(DG_OKCANCEL_ERROR));
-  cobj->Set( String::New("DG_OKCANCEL_INFO"), Number::New(DG_OKCANCEL_INFO));
-  cobj->Set( String::New("DG_YESNO"), Number::New(DG_YESNO));
-  cobj->Set( String::New("DG_YESNO_WARNING"), Number::New(DG_YESNO_WARNING));
-  cobj->Set( String::New("DG_YESNO_ERROR"), Number::New(DG_YESNO_ERROR));
-  cobj->Set( String::New("DG_YESNO_INFO"), Number::New(DG_YESNO_INFO));
-  return scope.Close(cobj);
+void getDialogTypes(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+  Local<Object> cobj = Object::New(isolate);
+  cobj->Set( String::NewFromUtf8(isolate, "DG_DEFAULT"), Number::New(isolate, DG_DEFAULT));
+  cobj->Set( String::NewFromUtf8(isolate,"DG_OK_WARNING"), Number::New(isolate, DG_OK_WARNING));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_OK_ERROR"), Number::New(isolate, DG_OK_ERROR));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_OK_INFO"), Number::New(isolate, DG_OK_INFO));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_OKCANCEL"), Number::New(isolate, DG_OKCANCEL));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_OKCANCEL_WARNING"), Number::New(isolate, DG_OKCANCEL_WARNING));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_OKCANCEL_ERROR"), Number::New(isolate, DG_OKCANCEL_ERROR));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_OKCANCEL_INFO"), Number::New(isolate, DG_OKCANCEL_INFO));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_YESNO"), Number::New(isolate, DG_YESNO));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_YESNO_WARNING"), Number::New(isolate, DG_YESNO_WARNING));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_YESNO_ERROR"), Number::New(isolate, DG_YESNO_ERROR));
+  cobj->Set( String::NewFromUtf8(isolate, "DG_YESNO_INFO"), Number::New(isolate, DG_YESNO_INFO));
+  args.GetReturnValue().Set(cobj);
 }
 
-Handle<Value> typeToString(const Arguments& args) {
-  HandleScope scope;
+void typeToString(const FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
   const char * response;
 
 	int type = Handle<Number>::Cast(args[0])->Uint32Value();
@@ -130,12 +139,12 @@ Handle<Value> typeToString(const Arguments& args) {
 	}
 
 
-   return scope.Close(String::New(response));
+	args.GetReturnValue().Set(String::NewFromUtf8(isolate, response));
 }
 
 
-Handle<Value> answerToString(const Arguments& args) {
-  HandleScope scope;
+void answerToString(const FunctionCallbackInfo<Value>& args) {
+	Isolate* isolate = args.GetIsolate();
   const char * response;
 
 	int type = Handle<Number>::Cast(args[0])->Uint32Value();
@@ -157,12 +166,12 @@ Handle<Value> answerToString(const Arguments& args) {
 		break;
 	}
 
-   return scope.Close(String::New(response));
+	args.GetReturnValue().Set(String::NewFromUtf8(isolate, response));
 }
 
 
-Handle<Value> dialog(const Arguments& args) {
-  HandleScope scope;
+void dialog(const FunctionCallbackInfo<Value>& args) {
+	Isolate* isolate = args.GetIsolate();
 
 	v8::String::Utf8Value uftValue(args[0]->ToString());
 	v8::String::Utf8Value uftValue2(args[1]->ToString());
@@ -170,8 +179,8 @@ Handle<Value> dialog(const Arguments& args) {
 	char * _stlt = *uftValue2;
 	int type = Handle<Number>::Cast(args[2])->Uint32Value();
 	int result = MINGUI_Dialog(_tlt, _stlt, NULL, type, 0);
+	args.GetReturnValue().Set(Number::New(isolate, result));
 
-   return scope.Close(Number::New(result));
 }
 
 void init(Handle<Object> exports) {
@@ -185,12 +194,13 @@ void init(Handle<Object> exports) {
 	gtk_init (&argc, &argvp);
 #endif
 
-  exports->Set(String::NewSymbol("notification"), FunctionTemplate::New(notification)->GetFunction());
-  exports->Set(String::NewSymbol("dialog"), FunctionTemplate::New(dialog)->GetFunction());
-  exports->Set(String::NewSymbol("getDialogTypes"), FunctionTemplate::New(getDialogTypes)->GetFunction());
-  exports->Set(String::NewSymbol("getResponseTypes"), FunctionTemplate::New(getResponseTypes)->GetFunction());
-  exports->Set(String::NewSymbol("answerToString"), FunctionTemplate::New(answerToString)->GetFunction());
-  exports->Set(String::NewSymbol("typeToString"), FunctionTemplate::New(typeToString)->GetFunction());
+	NODE_SET_METHOD(exports, "notification", notification);
+	NODE_SET_METHOD(exports, "dialog", dialog);
+	NODE_SET_METHOD(exports, "getDialogTypes", getDialogTypes);
+	NODE_SET_METHOD(exports, "getResponseTypes", getResponseTypes);
+	NODE_SET_METHOD(exports, "answerToString", answerToString);
+	NODE_SET_METHOD(exports, "typeToString", typeToString);
+ 
 
 }
 
