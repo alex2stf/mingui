@@ -1,6 +1,6 @@
 {
   "name": "mingui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "minimal graphical user interface components",
   "main": "index.js",
   "directories": {
@@ -29,6 +29,7 @@
     "macos graphics",
     "unix",
     "windows graphics",
-    "notification center"
+    "notification center",
+	"objective-c++"
   ]
 }
